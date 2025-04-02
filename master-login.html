@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Master Login Page</h1>
+
+        <!-- Admin Login Section -->
+        <h2>Admin Login</h2>
+        <form id="admin-login-form">
+            <label for="admin-username">Admin Username:</label>
+            <input type="text" id="admin-username" required>
+            <label for="admin-password">Admin Password:</label>
+            <input type="password" id="admin-password" required>
+            <button type="submit" class="btn">Admin Login</button>
+        </form>
+
+        <!-- User Creation Section -->
+        <h2>Create a New User</h2>
+        <form id="create-user-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+            <button type="submit" class="btn">Create User</button>
+        </form>
+
+        <!-- Existing Users Section -->
+        <h2>Existing Users</h2>
+        <ul id="user-list"></ul>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        // Load users on page load
+        document.addEventListener('DOMContentLoaded', displayUsers);
+
+        // Handle user creation
+        document.getElementById('create-user-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            createUser(username, password);
+            displayUsers();
+            this.reset();
+        });
+
+        // Handle admin login
+        document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            if (username === 'admin' && password === 'admin123') {
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                alert('Invalid admin credentials!');
+            }
+        });
+    </script>
+</body>
+</html>

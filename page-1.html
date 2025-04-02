@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page 1: Introduction</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Page 1: Introduction</h1>
+        <div id="page-content"></div>
+
+        <!-- Edit Form (visible only in edit mode) -->
+        <div id="edit-form" style="display: none;">
+            <h2>Edit Content</h2>
+            <form id="content-edit-form">
+                <label for="content">Content:</label>
+                <textarea id="content" rows="5" required></textarea>
+                <button type="submit" class="btn">Save Changes</button>
+            </form>
+        </div>
+
+        <a id="back-link" class="btn">Back to User Landing</a>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        // Get username and edit mode from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('username');
+        const editMode = urlParams.get('edit') === 'true';
+
+        // Set back link with username
+        document.getElementById('back-link').href = `user-landing.html?username=${username}`;
+
+        // Load and display content
+        const pageNum = 1; // Change this for each page (1 to 8)
+        const userContent = getUserContent(username);
+        const contentDiv = document.getElementById('page-content');
+        const content = userContent[`page${pageNum}`] || 'No content yet.';
+        contentDiv.innerHTML = `<p>${content}</p>`;
+
+        // Show edit form if in edit mode
+        if (editMode) {
+            const editForm = document.getElementById('edit-form');
+            const contentTextarea = document.getElementById('content');
+            editForm.style.display = 'block';
+            contentTextarea.value = content === 'No content yet.' ? '' : content;
+
+            // Handle content saving
+            document.getElementById('content-edit-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const newContent = contentTextarea.value;
+                saveUserContent(username, `page${pageNum}`, newContent);
+                alert('Content saved!');
+                window.location.href = `page-${pageNum}.html?username=${username}`;
+            });
+        }
+    </script>
+</body>
+</html>

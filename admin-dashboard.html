@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+
+        <!-- Manage User Access -->
+        <h2>Manage User Access</h2>
+        <ul id="admin-user-list"></ul>
+
+        <!-- Monitor User Content -->
+        <h2>Monitor User Content</h2>
+        <div id="user-content-monitor"></div>
+
+        <a href="master-login.html" class="btn">Back to Master Login</a>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        // Display users and their access status
+        document.addEventListener('DOMContentLoaded', function() {
+            const users = getUsers();
+            const userList = document.getElementById('admin-user-list');
+            const contentMonitor = document.getElementById('user-content-monitor');
+
+            // Display users with access toggle buttons
+            users.forEach(user => {
+                if (user.username !== 'admin') { // Exclude admin from the list
+                    const li = document.createElement('li');
+                    li.textContent = `${user.username} - Access: ${user.access ? 'Granted' : 'Revoked'}`;
+                    const toggleBtn = document.createElement('button');
+                    toggleBtn.textContent = user.access ? 'Revoke Access' : 'Grant Access';
+                    toggleBtn.className = 'btn';
+                    toggleBtn.onclick = () => toggleAccess(user.username);
+                    li.appendChild(toggleBtn);
+                    userList.appendChild(li);
+
+                    // Display user content for monitoring
+                    const userContentDiv = document.createElement('div');
+                    userContentDiv.innerHTML = `<h3>${user.username}'s Content</h3>`;
+                    const userContent = getUserContent(user.username);
+                    for (let i = 1; i <= 8; i++) {
+                        const pageContent = userContent[`page${i}`] || `Page ${i}: No content yet.`;
+                        userContentDiv.innerHTML += `<p><strong>Page ${i}:</strong> ${pageContent}</p>`;
+                    }
+                    contentMonitor.appendChild(userContentDiv);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

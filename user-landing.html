@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Landing Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="user-welcome"></h1>
+        <h2>Your Pages</h2>
+        <ul id="page-list"></ul>
+        <a href="master-login.html" class="btn">Back to Master Login</a>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        // Display welcome message and page links
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('username');
+        document.getElementById('user-welcome').textContent = `Welcome, ${username}!`;
+
+        // Check if user has access to edit
+        const users = getUsers();
+        const user = users.find(u => u.username === username);
+        const hasAccess = user && user.access;
+
+        // Display page links with edit buttons if user has access
+        const pageList = document.getElementById('page-list');
+        const pageTitles = [
+            'Page 1: Introduction',
+            'Page 2: About Me',
+            'Page 3: My Hobbies',
+            'Page 4: My Work',
+            'Page 5: My Projects',
+            'Page 6: My Goals',
+            'Page 7: Contact Me',
+            'Page 8: FAQ'
+        ];
+
+        pageTitles.forEach((title, index) => {
+            const pageNum = index + 1;
+            const li = document.createElement('li');
+            const viewLink = document.createElement('a');
+            viewLink.href = `page-${pageNum}.html?username=${username}`;
+            viewLink.textContent = title;
+            viewLink.className = 'btn';
+            li.appendChild(viewLink);
+
+            if (hasAccess) {
+                const editLink = document.createElement('a');
+                editLink.href = `page-${pageNum}.html?username=${username}&edit=true`;
+                editLink.textContent = 'Edit';
+                editLink.className = 'btn edit-btn';
+                li.appendChild(editLink);
+            }
+
+            pageList.appendChild(li);
+        });
+    </script>
+</body>
+</html>
